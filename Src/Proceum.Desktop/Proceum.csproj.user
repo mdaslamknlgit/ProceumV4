@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectView>ProjectFiles</ProjectView>
+    <PublishUrlHistory>D:\MdAslam\MyProjects\Proceum\ProceumSetup\|C:\Users\Dell\Desktop\MadeEasyPublish\|publish\</PublishUrlHistory>
+    <InstallUrlHistory>http://localhost/ProceumSetup/</InstallUrlHistory>
+    <SupportUrlHistory />
+    <UpdateUrlHistory />
+    <BootstrapperUrlHistory />
+    <ErrorReportUrlHistory />
+    <FallbackCulture>en-US</FallbackCulture>
+    <VerifyUploadedFiles>false</VerifyUploadedFiles>
+  </PropertyGroup>
+  <PropertyGroup>
+    <EnableSecurityDebugging>false</EnableSecurityDebugging>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Customer|AnyCPU'">
+    <StartArguments>
+    </StartArguments>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <StartArguments>proceuma:38_0_3191359485488489:8545:eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiNTUyYzk4Y2U3ZGI1Mzg1MDAyZWJiNmQ5ZGVmMzM5MjNhOGVmYjMwNzJmMGUzMjc3NTlkMzc1Y2IyNzRmNTZlM2I2NDc1Zjk4ZTM2ZTE3MWMiLCJpYXQiOjE2NjIwMjY5MDIuMzA4NzgxLCJuYmYiOjE2NjIwMjY5MDIuMzA4Nzg2LCJleHAiOjE2OTM1NjI5MDIuMjkyNTc4LCJzdWIiOiI4NTQ1Iiwic2NvcGVzIjpbXX0.ZdtwRm2NYSoHW3oBfSbmE4ZWJwav6BCc9ts5Hv8nRrPXkcPVEV4l4WXJ_5objdT8oHAVc_dHKkxeSG18sIkxl3m06iC7HK8kpWg4823rbglmDyXNwZ5mR3Sg7vs1MBZwcF6xaAMB1EOG0OGhuHMF88GNr5NYBPUwwIrzG7XRPoWivYau_gONn1avs-HNf0DcO_EoWX4DsAlzL_QLSPK54x79BQEJ6tOgm7KIKZCE2z4QdsSn5ZwpDl-i-IbwflsWRmUSDIfwK3XqkfGK1GegwdyfitxPj0Vi4moYoL_Pj0D-6wG3tnuXlUBUmihv4baP0APSQNWG-CZwd-Hb3_ajSZ8vo-xEFecssktgPvXGFbNV50wj9pydmaJn_CphX1OGINtmzT-5yvJazBaK5epEwnfEivg4k1n7eHCBThvIocGDOsypWxETlg7mhQZZU3hfB0FDtkqC9uF0T_Gy4SkCByHJ2ae6k1PKyw6Um4tDfhhTA5bin1ysq0XtaSdqUwfSw9f9wAlkkl84nYGfiKQ3xoPMmuSqNUATFjNakd25eBkd8754mGiUCQFjXL5xvzCgem3EwkQaWZo5Q3RQIQxCReVfvrUBPiH0EO-Wke60tA0ZP2ucA8LGnI1hVpMQL9EtrHS5VleP37wmz3SRheMsHy-0jXNJN7CyEhf4r0CEusc:1_3_1107</StartArguments>
+  </PropertyGroup>
+</Project>

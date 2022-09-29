@@ -1,0 +1,56 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.Configuration;
+using System.Data.SqlClient;
+using EduDriveWinForms;
+using System.IO;
+
+
+namespace SJC_Cloud.Customer_cloud
+{
+    public partial class frmDownloadVideo : Form
+    {
+        SqlConnection con = new SqlConnection(@"Data Source=P\SQLEXPRESS;Initial Catalog=SJC;Integrated Security=True");
+        SqlCommand cmd = new SqlCommand();
+        TreeNode parentNode = null;
+        Form _prevForm;
+        SJC_Cloud.Customer_cloud.frmDownloadVideo download;
+        Modals.AllInOneUserData CompleteUserData = new Modals.AllInOneUserData();
+        public frmDownloadVideo(Form prevForm, Modals.AllInOneUserData Data)
+        {
+            CompleteUserData = Data;            
+            InitializeComponent();
+            string user_id = Data.User_Data.user_data.id;
+        }
+      
+        private void frmDownloadVideo_Load(object sender, EventArgs e)
+        {        
+            con.Open();
+            String Sequel = "select videoname from tbl_videodata where userid='" + CompleteUserData.User_Data.user_data.id + "'";
+            SqlDataAdapter da = new SqlDataAdapter(Sequel, con);
+            DataTable dt = new DataTable();         
+            da.Fill(dt);
+            foreach (DataRow dr in dt.Rows)
+            {
+                parentNode = treeView1.Nodes.Add(dr["videoname"].ToString());
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    Button button = new Button();
+                    button.Text = "Delete" + i.ToString();
+                    button.Location = new Point(0, button.Height * i);
+                    this.treeView1.Controls.Add(button);
+
+                }
+            }
+            treeView1.ExpandAll();
+            con.Close();
+        }
+    }
+}

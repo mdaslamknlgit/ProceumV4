@@ -1,0 +1,135 @@
+﻿using System;
+using System.Data;
+using System.Windows.Forms;
+using System.Data.SqlClient;
+using EduDriveWinForms;
+using System.IO;
+using Microsoft.Win32.SafeHandles;
+
+namespace SJC_Cloud.Customer_cloud
+{
+    public partial class frmDownloadVideo : Form
+    {
+        SqlConnection con = new SqlConnection(@"Data Source=P\SQLEXPRESS;Initial Catalog=SJC;Integrated Security=True");
+        SqlCommand cmd = new SqlCommand();       
+        Modals.AllInOneUserData CompleteUserData = new Modals.AllInOneUserData();
+        public frmDownloadVideo(Form prevForm, Modals.AllInOneUserData Data)
+        {                      
+            InitializeComponent();
+            CompleteUserData = Data;
+            string user_id = CompleteUserData.User_Data.user_data.id;
+        }
+
+        public void VideoBind()
+        {
+            con.Open();
+            String Sequel = "select videoid, videoname from tbl_videodata where userid='" + CompleteUserData.User_Data.user_data.id + "'";
+            SqlDataAdapter da = new SqlDataAdapter(Sequel, con);
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+            gridBindVideos.DataSource = dt;
+            this.gridBindVideos.Columns["videoid"].Visible = false;
+            this.gridBindVideos.Columns["videoname"].Width = 180;
+            gridBindVideos.AutoGenerateColumns = false;
+            gridBindVideos.AllowUserToAddRows = false;
+            con.Close();
+
+            DataGridViewLinkColumn Play = new DataGridViewLinkColumn();
+            Play.UseColumnTextForLinkValue = true;
+            Play.DataPropertyName = "lnkColumn";
+            Play.LinkBehavior = LinkBehavior.SystemDefault;
+            Play.Text = "Play";
+            gridBindVideos.Columns.Add(Play);
+
+            DataGridViewLinkColumn Editlink = new DataGridViewLinkColumn();
+            Editlink.UseColumnTextForLinkValue = true;
+            Editlink.DataPropertyName = "lnkColumn";
+            Editlink.LinkBehavior = LinkBehavior.SystemDefault;
+            Editlink.Text = "Delete";
+            gridBindVideos.Columns.Add(Editlink);
+        }
+        private void frmDownloadVideo_Load(object sender, EventArgs e)
+        {
+           // VideoBind();
+        }
+
+        string Offline_Video_File_Path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\SJC_CloudData\Offline_Content\";
+        static readonly string rootFolder = @"C:\Users\pc\Documents\SJC_CloudData\Offline_Content\";
+        private void gridBindVideos_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
+        {
+            
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            
+        }
+        private void frmDownloadVideo_Load_1(object sender, EventArgs e)
+        {
+            VideoBind();
+        }
+
+       
+        private void gridBindVideos_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            var url = "";
+            string playvideofile = string.Empty;
+            string videofilename = string.Empty;
+            if (e.ColumnIndex == 3)
+            {
+                DataGridViewRow row = gridBindVideos.Rows[e.RowIndex];
+                if (MessageBox.Show(string.Format("Do you want to delete video : {0}?", row.Cells["videoname"].Value), "Confirmation", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    videofilename = "" + row.Cells["videoname"].Value;
+                    using (SqlCommand cmd = new SqlCommand("DELETE FROM tbl_videodata WHERE videoid = @videoid", con))
+                    {
+                        cmd.CommandType = CommandType.Text;
+                        cmd.Parameters.AddWithValue("@videoid", row.Cells["videoid"].Value);
+                        con.Open();
+                        cmd.ExecuteNonQuery();
+                        con.Close();
+                        File.Delete(Path.Combine(rootFolder, videofilename));
+                    }
+                    this.VideoBind();
+                }
+            }
+            if (e.ColumnIndex == 2)
+            {
+                DataGridViewRow row = gridBindVideos.Rows[e.RowIndex];
+                videofilename = "" + row.Cells["videoname"].Value;
+                playvideofile = Offline_Video_File_Path + videofilename;
+                string newpathname = @"E:\TestVideo\" + "100_1280.sjccontent";
+                url = PlayEncryptedVideo(newpathname, "100_1280.sjccontent");
+               // url = PlayEncryptedVideo(playvideofile, videofilename);
+                pnVideo.Visible = true;
+                axWindowsMediaPlayer1.URL = url;
+                axWindowsMediaPlayer1.settings.autoStart = true;
+                axWindowsMediaPlayer1.Ctlenabled = true;
+            }
+        }
+
+        private static string PlayEncryptedVideo(string path, string guid)
+        {
+            using (SafeFileHandle fileHandle =
+               new SafeFileHandle(
+                   BoxedAppSDK.NativeMethods.BoxedAppSDK_CreateVirtualFileBasedOnIStream(
+                       guid + ".mp4", // name of the pseudo file
+                       BoxedAppSDK.NativeMethods.EFileAccess.GenericWrite,
+                       BoxedAppSDK.NativeMethods.EFileShare.Read,
+                       IntPtr.Zero,
+                       BoxedAppSDK.NativeMethods.ECreationDisposition.New,
+                       BoxedAppSDK.NativeMethods.EFileAttributes.Normal,
+                       IntPtr.Zero,
+                       new VirtualFileStream(path)
+                   ),
+                   true
+               )
+           )
+            {
+                // We use "using" to close the allocated handle
+                // The virtual file will still exist
+            }
+            return guid + ".mp4";
+        }
+    }
+}
